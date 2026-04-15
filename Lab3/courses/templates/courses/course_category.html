@@ -1,0 +1,18 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+<h1>{{ category.name }} courses</h1>
+
+<ul>
+    {% for course in courses %} {# Am schimbat din category.course_set.all in courses #}
+        <li>
+            <a href="{% url 'course_detail' course.pk %}">{{ course.title }}</a> 
+            - {{ course.instructor }}
+        </li>
+    {% empty %}
+        <li>No courses found in this category.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'course_list' %}">Back to list</a>
+{% endblock %}

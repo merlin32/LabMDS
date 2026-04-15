@@ -1,0 +1,50 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+<h1>Course Catalog</h1>
+
+{# Formularul de filtrare #}
+<form method="get">
+    <input type="text" name="q" placeholder="Search..." value="{{ query }}">
+    <select name="category">
+        <option value="">All categories</option>
+        {% for cat in categories %}
+            {# Aici folosim "cat" pentru că așa am numit variabila în for #}
+            <option value="{{ cat.pk }}" {% if request.GET.category == cat.pk|stringformat:"i" %}selected{% endif %}>
+                {{ cat.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<br>
+
+{# Lista de cursuri #}
+{% for course in courses %}
+<div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+    {# Link către detaliile cursului #}
+    <a href="{% url 'course_detail' course.pk %}" style="font-size: 1.2em; font-weight: bold;">
+        {{ course.title }}
+    </a>
+
+    <div>
+        {{ course.instructor }} | 
+        
+        {# CERINȚA: Numele categoriei ca link către pagina de categorie #}
+        {% if course.category %}
+            <a href="{% url 'category_detail' course.category.pk %}">
+                {{ course.category.name }}
+            </a>
+        {% else %}
+            No category
+        {% endif %}
+        
+        | {{ course.credits }} credits
+    </div>
+</div>
+{% empty %}
+<p>No courses found.</p>
+{% endfor %}
+
+{% endblock %}
