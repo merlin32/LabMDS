@@ -1,3 +1,5 @@
 .venv/
 tasks.json
 SPEC.md
+mutants/
+__pycache__/
